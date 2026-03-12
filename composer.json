@@ -1,0 +1,10 @@
+{
+    "name": "ieneko8284/synchly",
+    "description": "Matching app for music lovers",
+    "autoload": {
+        "psr-4": {
+            "Synchly\\": "src/"
+        }
+    },
+    "require": {}
+}
