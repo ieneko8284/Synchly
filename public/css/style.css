@@ -52,16 +52,123 @@ body {
     font-size: 1.4rem;
 }
 
-/* ユーザーカードのスタイル */
+.user-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2列固定 */
+    gap: 12px;
+    padding: 10px;
+}
+
+/* 5:7比率のカード */
 .user-card {
     background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    aspect-ratio: 5 / 7; /* カード全体の比率 */
+    position: relative;
+    transition: opacity 0.3s ease;
+}
+
+/* 正方形の画像エリア */
+.card-image-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: #eee;
+}
+
+.card-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-info {
+    padding: 10px;
+    flex-grow: 1;
+}
+
+.card-info h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-info .bio {
+    font-size: 0.75rem;
+    color: #777;
+    margin-top: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ハートボタンを画像右下に配置 */
+.user-card .like-btn {
+    position: absolute;
+    bottom: 45%; /* 画像のすぐ下あたり */
+    right: 10px;
+    transform: translateY(50%);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* マイページ用のスタイル */
+.mypage-container {
+    padding-top: 20px;
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile-icon {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    object-fit: cover;
+}
+
+.menu-list {
+    list-style: none;
+    padding: 0;
+    background: #fff;
     border-radius: 12px;
-    padding: 15px;
-    margin-bottom: 15px;
+}
+
+.menu-list li {
+    padding: 16px;
+    border-bottom: 1px solid #eee;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    cursor: pointer;
+}
+
+.menu-list li:last-child { border: none; }
+
+.menu-list li::after {
+    content: '〉';
+    color: #ccc;
+    font-size: 0.8rem;
+}
+
+/* 悪だくみ用の目立たないログアウト */
+.danger-link {
+    color: #ccc !important;
+    font-size: 0.75rem;
+    margin-top: 40px;
+    text-align: center;
+    display: block;
+    text-decoration: none;
 }
 
 .user-info h3 {
@@ -138,4 +245,259 @@ body {
     border-radius: 50%;
     pointer-events: none;
     animation: syncRipple 0.6s ease-out forwards;
+}
+
+/* ログインページ全体のレイアウト */
+.login-page {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* 綺麗なグラデーション */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding-bottom: 0; /* 下部メニュー分をリセット */
+}
+
+/* ログインカード */
+.login-container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    width: 90%;
+    max-width: 380px;
+    text-align: center;
+}
+
+.login-container h1 {
+    color: #4a4a4a;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}
+
+.login-container p {
+    color: #777;
+    margin-bottom: 30px;
+}
+
+/* フォームの調整 */
+.form-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    color: #555;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input, 
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box; /* パディングを含めたサイズ計算 */
+    font-size: 1rem;
+}
+
+/* はじめるボタン */
+.login-btn {
+    width: 100%;
+    padding: 15px;
+    background: #ff4757;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    margin-top: 10px;
+}
+
+.login-btn:hover {
+    background: #ff6b81;
+    transform: translateY(-2px);
+}
+
+/* 認証ページ共通背景 */
+.auth-page {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* フォームの容器 */
+.auth-container {
+    background: #fff;
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.auth-container h1 {
+    font-size: 2.2rem;
+    color: #333;
+    margin: 0;
+}
+
+.auth-subtitle {
+    color: #888;
+    margin-bottom: 30px;
+}
+
+.error-msg {
+    color: #ff4757;
+    font-size: 0.9rem;
+    background: #ffeef0;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+/* フォーム部品 */
+.form-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.form-group input, 
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+    border-color: #667eea;
+}
+
+/* ボタン */
+.auth-btn {
+    width: 100%;
+    padding: 16px;
+    background: #ff4757;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
+    margin: 10px 0 20px;
+}
+
+.auth-btn:hover {
+    background: #ff6b81;
+}
+
+.auth-footer {
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.auth-footer a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* 設定画面のヘッダー */
+.settings-header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    background: #fff;
+}
+
+.back-btn {
+    border: none;
+    background: none;
+    color: #3498db;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+/* 危険地帯のエリア */
+.danger-zone-area {
+    margin-top: 50px;
+    padding: 20px;
+    text-align: center;
+    border-top: 1px dashed #ddd;
+}
+
+.help-text {
+    font-size: 0.75rem;
+    color: #999;
+    margin-bottom: 20px;
+}
+
+/* 退会ボタン：普通の黒色（少し薄めの#333）に変更 */
+.withdraw-btn {
+    background: none;
+    border: none;
+    color: #333; /* 黒色 */
+    font-size: 0.75rem;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-top: 20px;
+}
+
+.withdraw-btn:hover {
+    color: #ff4757; /* ホバー時は赤くして気づかせる */
+}
+
+/* ログアウトリンク：黒色で統一 */
+.logout-link {
+    display: inline-block;
+    color: #333; /* 黒色 */
+    background: #fff;
+    border: 1px solid #333; /* 枠線も黒に */
+    padding: 10px 30px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.logout-link:hover {
+    background: #f0f0f0;
+}
+
+.remove-like-btn {
+    font-weight: bold;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.remove-like-btn:active {
+    transform: scale(0.8);
 }
