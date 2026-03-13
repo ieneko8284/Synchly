@@ -18,11 +18,11 @@
         <form action="/api/signin" method="POST">
             <div class="form-group">
                 <label>メールアドレス</label>
-                <input type="email" name="email" required placeholder="jiro@example.com">
+                <input type="email" name="email" required placeholder="">
             </div>
             <div class="form-group">
                 <label>パスワード</label>
-                <input type="password" name="password" required placeholder="••••••••">
+                <input type="password" name="password" required placeholder="">
             </div>
             <button type="submit" class="auth-btn">サインイン</button>
         </form>

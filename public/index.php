@@ -73,6 +73,45 @@ switch ($path) {
         $controller->removeLikeApi(); // ここも同じ
         break;
 
+    case '/api/likes/received':
+        $controller = new UserController();
+        $controller->getReceivedLikesApi();
+        break;
+
+    case '/api/matches':
+        $controller = new UserController();
+        $controller->getMatchesApi();
+        break;
+
+    // public/index.php
+
+    case '/api/check-new-matches':
+        $controller = new UserController();
+        $controller->checkNewMatchesApi(); // ここでコントローラーを呼ぶ
+        break;
+
+    case '/api/mark-match-notified':
+        $controller = new UserController();
+        $controller->markMatchNotifiedApi(); // 通知済みフラグを立てる用
+        break;
+
+    // index.php のルーター部分のイメージ
+    case '/api/my-profile': // または action パラメータ判定
+        $controller = new \Synchly\Controller\UserController();
+        $controller->getMyProfileApi();
+        exit; // JSONを返した後は必ず止める！
+
+        // --- チャット機能 ---
+    case '/api/chat/history':
+        $controller = new UserController();
+        $controller->getChatHistoryApi();
+        break;
+
+    case '/api/chat/send':
+        $controller = new UserController();
+        $controller->sendMessageApi();
+        break;
+
     default:
         http_response_code(404);
         echo "404 Not Found";

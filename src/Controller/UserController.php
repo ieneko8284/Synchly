@@ -115,10 +115,34 @@ class UserController
             $db = $database->getConnection();
             $repository = new UserRepository($db);
 
+            // 1. まずはいいねを保存
             $success = $repository->saveLike($myId, $toUserId);
 
+            $isMatched = false;
+            $matchedUser = null;
+
+            if ($success) {
+                $isMatched = $repository->isMatched($myId, $toUserId);
+
+                if ($isMatched) {
+                    // ★追加：まだマッチングテーブルにデータがなければ作成する
+                    if (!$repository->existsMatch($myId, $toUserId)) {
+                        $repository->createMatch($myId, $toUserId);
+                    }
+
+                    // マッチした相手の情報を取得
+                    $stmt = $db->prepare("SELECT id, username, profile_image FROM users WHERE id = ?");
+                    $stmt->execute([$toUserId]);
+                    $matchedUser = $stmt->fetch(\PDO::FETCH_ASSOC);
+                }
+            }
+
             header('Content-Type: application/json');
-            echo json_encode(['success' => $success]);
+            echo json_encode([
+                'success' => $success,
+                'isMatched' => $isMatched,
+                'matchedUser' => $matchedUser
+            ]);
             exit;
         }
     }
@@ -173,6 +197,158 @@ class UserController
 
         header('Content-Type: application/json');
         echo json_encode(['success' => $success]);
+        exit;
+    }
+
+    public function getReceivedLikesApi()
+    {
+        $myId = $_SESSION['user_id'] ?? null;
+        if (!$myId) {
+            header('Content-Type: application/json');
+            echo json_encode([]);
+            exit;
+        }
+
+        $database = new Database();
+        $db = $database->getConnection();
+        // Repositoryをインスタンス化して呼び出す
+        $repository = new UserRepository($db);
+        $users = $repository->findReceivedLikes($myId);
+
+        header('Content-Type: application/json');
+        echo json_encode($users);
+        exit;
+    }
+
+    public function getMatchesApi()
+    {
+        $myId = $_SESSION['user_id'] ?? null;
+        if (!$myId) {
+            header('Content-Type: application/json');
+            echo json_encode([]);
+            exit;
+        }
+
+        $database = new Database();
+        $db = $database->getConnection();
+        $repository = new UserRepository($db);
+        $users = $repository->findMatchedUsers($myId);
+
+        header('Content-Type: application/json');
+        echo json_encode($users);
+        exit;
+    }
+
+    public function checkNewMatchesApi()
+    {
+        $myId = $_SESSION['user_id'] ?? null;
+        if (!$myId) {
+            echo json_encode([]);
+            exit;
+        }
+
+        $database = new Database();
+        $db = $database->getConnection();
+        $repository = new UserRepository($db);
+
+        // まだ通知していない（is_notified = 0）相互いいねユーザーを取得
+        $newMatches = $repository->getUnnotifiedMatches($myId);
+
+        // 取得できたら、即座に「通知済み」に更新して、二度出ないようにする
+        foreach ($newMatches as $match) {
+            $repository->markMatchesAsNotified($myId, $match['id']);
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($newMatches);
+        exit;
+    }
+
+    public function markMatchNotifiedApi()
+    {
+        // JSON形式で送られてくるデータを受け取る
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+
+        $myId = $_SESSION['user_id'] ?? null;
+        $fromUserId = $data['from_user_id'] ?? null;
+
+        if (!$myId || !$fromUserId) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Invalid data']);
+            exit;
+        }
+
+        $database = new Database();
+        $db = $database->getConnection();
+        $repository = new UserRepository($db);
+
+        // Repositoryのメソッドを呼んでフラグを更新（1にする）
+        $success = $repository->markMatchesAsNotified($myId, $fromUserId);
+
+        header('Content-Type: application/json');
+        echo json_encode(['success' => $success]);
+        exit;
+    }
+
+    // src/Controller/UserController.php 内に追加
+
+    public function getMyProfileApi()
+    {
+        $myId = $_SESSION['user_id'] ?? null;
+
+        if (!$myId) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+            exit;
+        }
+
+        $database = new Database();
+        $db = $database->getConnection();
+        $repository = new UserRepository($db);
+
+        $user = $repository->findById($myId);
+
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => !!$user, // $userが存在すればtrue
+            'user' => $user
+        ]);
+        exit;
+    }
+
+    // src/Controller/UserController.php
+
+    public function sendMessageApi()
+    {
+        $input = json_decode(file_get_contents('php://input'), true);
+        $matchId = $input['match_id'] ?? null;
+        $text = $input['message'] ?? '';
+        $myId = $_SESSION['user_id'] ?? null;
+
+        if ($matchId && $text && $myId) {
+            $database = new Database();
+            $db = $database->getConnection();
+            $repository = new UserRepository($db);
+
+            $success = $repository->saveMessage($matchId, $myId, $text);
+            echo json_encode(['success' => $success]);
+        }
+        exit;
+    }
+
+    public function getChatHistoryApi()
+    {
+        $matchId = $_GET['match_id'] ?? null;
+        if ($matchId) {
+            $database = new Database();
+            $db = $database->getConnection();
+            $repository = new UserRepository($db);
+
+            $messages = $repository->getMessagesByMatchId($matchId);
+            header('Content-Type: application/json');
+            echo json_encode($messages);
+        }
         exit;
     }
 }

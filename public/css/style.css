@@ -7,15 +7,6 @@ body {
     padding-bottom: 70px; /* メニューの高さ分 */
 }
 
-.app-header {
-    background: #fff;
-    padding: 1rem;
-    text-align: center;
-    border-bottom: 1px solid #eee;
-    position: sticky;
-    top: 0;
-}
-
 .container {
     padding: 20px;
 }
@@ -50,13 +41,6 @@ body {
 
 .nav-icon {
     font-size: 1.4rem;
-}
-
-.user-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* 2列固定 */
-    gap: 12px;
-    padding: 10px;
 }
 
 /* 5:7比率のカード */
@@ -119,8 +103,13 @@ body {
 }
 
 /* マイページ用のスタイル */
+/* 2. マイページ（mypage-container）も中央に寄せる */
 .mypage-container {
-    padding-top: 20px;
+    padding: 20px;
+    max-width: 650px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
 .profile-header {
@@ -500,4 +489,316 @@ body {
 
 .remove-like-btn:active {
     transform: scale(0.8);
+}
+
+/* マッチング時のふわっと出る画面 */
+.match-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    z-index: 1000; animation: fadeIn 0.5s ease; color: white;
+}
+.match-content h2 { font-size: 3rem; color: #ff4757; margin-bottom: 20px; }
+.match-photos { display: flex; gap: 20px; margin-bottom: 30px; }
+.match-photo { width: 100px; height: 100px; border-radius: 50%; border: 3px solid #fff; object-fit: cover; }
+
+/* PCで見た時にスマホっぽく見せるための設定 */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f5f5f5; 
+    display: flex;
+    justify-content: center; /* コンテナを中央に */
+    min-height: 100vh;
+}
+
+/* --- メインコンテナを基準軸にする --- */
+#app-container {
+    width: 100vw; /* スマホでは全幅 */
+    max-width: 480px; /* PCではこの幅に固定 */
+    background-color: #fff;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+/* ヘッダーの修正：背景は画面一杯、中身は480pxに固定 */
+header {
+    width: 100%; /* ★画面の端から端まで */
+    height: 60px;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+    position: fixed;
+    top: 0;
+    left: 0; /* ★左端にピッタリくっつける */
+    z-index: 100;
+    display: flex;
+    justify-content: center; /* ★中身（ロゴとか）を中央へ */
+}
+
+/* ヘッダーの中のコンテンツ（もしあれば）を480px内に収める */
+header .header-inner {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 外側のバー：画面いっぱいに広げる */
+.mobile-nav {
+    width: 100%;           /* ★ここを100%に */
+    max-width: none;       /* ★制限を解除する */
+    height: 75px;
+    background: #fff;
+    border-top: 1px solid #eee;
+    position: fixed;
+    bottom: 0;
+    left: 0;               /* ★左端から */
+    right: 0;              /* ★右端まで */
+    z-index: 100;
+    display: flex;
+    justify-content: center; /* 中身の inner を中央に寄せる */
+    border-radius: 20px; /* 角を丸くする */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* 優しい影 */
+    margin-bottom: 10px; /* 画面の一番下から少しだけ浮かせる */
+    border: 1px solid #eee;
+}
+
+/* 内側の箱：ここで 650px に絞る */
+.nav-inner {
+    width: 100%;
+    max-width: 650px;      /* ★ここでユーザーグリッドと同じ幅に制限 */
+    padding: 0 20px;       /* グリッドの余白と合わせる */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+/* 各アイテムは25%ずつ分け合う */
+.nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* --- コンテンツエリアの余白を強制する --- */
+#app-content {
+    width: 100%;
+    padding-top: 60px; /* ヘッダーの高さ分 */
+    padding-bottom: 80px; /* ナビの高さ分 + 余裕 */
+    box-sizing: border-box;
+}
+
+/* --- ユーザーグリッドのズレを防止 --- */
+.user-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 均等に2分割 */
+    gap: 12px;
+    padding: 12px;
+    width: 100%;
+    box-sizing: border-box; /* これ重要！ */
+}
+
+/* PC（画面幅が広いとき）の調整 */
+@media (min-width: 600px) {
+    #app-content {
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 60px; /* ヘッダー分 */
+        padding-bottom: 80px; /* ナビ分 */
+    }
+
+    .user-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 15px;
+        padding: 20px; /* ここだけで余白を調整 */
+        
+        /* ★ここを 480px から 650px くらいに広げるとPCらしくなるよ */
+        max-width: 650px; 
+        margin: 0 auto;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .card-info h3 {
+        font-size: 0.85rem;
+    }
+}
+
+/* header-inner や nav-inner を作っている場合 */
+header .header-inner, .nav-inner {
+    max-width: 650px; /* グリッドの max-width と合わせる */
+    width: 100%;
+}
+
+.nav-item {
+    flex: 1;               /* ★4つのボタンで幅を25%ずつ分け合う */
+    min-width: 0;          /* 幅計算のバグ防止 */
+    
+    background: none;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+/* アイコン自体の高さを固定すると、さらに安定するよ */
+.material-symbols-outlined {
+    font-size: 1.6rem;      /* アイコンの大きさ */
+    display: block;
+}
+
+/* 3. トーク一覧（talk-list）も中央に寄せる */
+.talk-list-header, .talk-list {
+    max-width: 650px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.talk-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #f9f9f9;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.talk-item:hover {
+    background-color: #f0f0f0;
+}
+
+.talk-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.talk-name {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.talk-preview {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+/* 共通の吹き出しスタイル */
+.message-bubble {
+    max-width: 75%;
+    padding: 10px 15px;
+    border-radius: 18px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    position: relative;
+    word-wrap: break-word;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1); /* 少しだけ影をつけて立体感 */
+}
+
+/* 相手からのメッセージ（薄い灰色） */
+.message-bubble.received {
+    align-self: flex-start;
+    background-color: #f0f0f0; /* 薄い灰色 */
+    color: #333;
+    border-bottom-left-radius: 4px; /* 角の丸みを少し変えて「吹き出し」感を出す */
+}
+
+/* 自分からのメッセージ（赤色） */
+.message-bubble.sent {
+    align-self: flex-end;
+    background-color: #ff4757; /* 鮮やかな赤 */
+    color: #ffffff; /* 文字は白で見やすく */
+    border-bottom-right-radius: 4px;
+}
+
+/* 送信時間の表示（背景が白なので色を調整） */
+.message-time {
+    font-size: 0.7rem;
+    margin-top: 5px;
+    display: block;
+}
+
+.message-bubble.sent .message-time {
+    color: #ffdada; /* 赤い吹き出しの中では薄ピンクの文字 */
+    text-align: right;
+}
+
+.message-bubble.received .message-time {
+    color: #999; /* 灰色の吹き出しの中ではグレーの文字 */
+    text-align: left;
+}
+
+/* 1. チャット画面の幅を 650px に制限して中央寄せ */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 160px);
+    background-color: #ffffff;
+    position: relative;
+    /* ★ここを追加：グリッドと同じ最大幅にする */
+    max-width: 650px;
+    width: 100%;
+    margin: 0 auto; 
+    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
+}
+
+/* メッセージエリアをスクロール可能に */
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* 4. メッセージ入力エリアが親の 650px 内に収まるように修正 */
+.chat-input-area {
+    display: flex;
+    padding: 10px 15px;
+    background: #f8f8f8;
+    border-top: 1px solid #eee;
+    align-items: center;
+    /* 親要素が中央寄せになっているので、ここは width: 100% でOK */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#message-input {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    outline: none;
+    background: #fff;
+}
+
+#send-btn {
+    background: #ff4757; /* 送信ボタンも赤に合わせよう */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

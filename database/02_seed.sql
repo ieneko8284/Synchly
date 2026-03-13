@@ -1,7 +1,58 @@
--- テストデータ挿入
--- ※パスワードは全て 'password123' をハッシュ化したもの
--- $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi
+USE synchly_db;
+
+-- 男性ユーザー (gender=1) 25人
 INSERT INTO users (id, username, email, password_hash, gender, bio) VALUES 
-(UUID(), 'じろう', 'jiro@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, 'じろうです。テストユーザー1号です。'),
-(UUID(), 'あかり', 'akari@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, '音楽好きな女性です！'),
-(UUID(), 'ひかり', 'hikari@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, '歌うのが好きです。');
+(UUID(), 'たろう', 'taro@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, 'ドライブが趣味です！'),
+(UUID(), 'けんじ', 'kenji@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, '最近Javaの勉強を始めました。'),
+(UUID(), 'ひろし', 'hiroshi@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, 'キャンプ仲間募集中。'),
+(UUID(), 'ゆうた', 'yuta@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, '美味しいラーメン屋教えてください。'),
+(UUID(), 'たくや', 'takuya@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, '休日は映画を見て過ごします。'),
+(UUID(), 'りょう', 'ryo@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, 'サッカー観戦が大好きです。'),
+(UUID(), 'けいた', 'keita@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, '猫派のエンジニア志望です。'),
+(UUID(), 'だいき', 'daiki@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, 'カフェ巡りが趣味。'),
+(UUID(), 'しょう', 'sho@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, '筋トレがんばってます！'),
+(UUID(), 'かずき', 'kazuki@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, '夜の散歩が最近のブーム。'),
+(UUID(), 'としき', 'toshiki@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, 'カメラ始めました。'),
+(UUID(), 'なおき', 'naoki@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, '旅行に行くのが好きです。'),
+(UUID(), 'こうた', 'kota@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, 'アニメの話で盛り上がりたい。'),
+(UUID(), 'しんご', 'shingo@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, 'バスケやってました。'),
+(UUID(), 'まさや', 'masaya@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, '料理男子を目指してます。'),
+(UUID(), 'そうた', 'sota@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, 'ギター練習中です。'),
+(UUID(), 'まこと', 'makoto@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, '読書が好きです。'),
+(UUID(), 'あらた', 'arata@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, '星を見るのが好き。'),
+(UUID(), 'はやと', 'hayato@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, 'スノボに行きたい！'),
+(UUID(), 'かいと', 'kaito@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, '海が大好きです。'),
+(UUID(), 'ゆうま', 'yuma@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, '冬より夏派。'),
+(UUID(), 'さとし', 'satoshi@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, 'よろしくお願いします！'),
+(UUID(), 'まなぶ', 'manabu@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, '技術書を読むのが日課。'),
+(UUID(), 'よしき', 'yoshiki@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, 'お酒はワインが好き。'),
+(UUID(), 'てつや', 'tetsuya@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 1, '日曜大工が趣味です。');
+
+-- 女性ユーザー (gender=2) 25人
+INSERT INTO users (id, username, email, password_hash, gender, bio) VALUES 
+(UUID(), 'あかり', 'akari@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, 'パン作りが好きです。'),
+(UUID(), 'ななみ', 'nanami@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, 'ピアノを弾きます。'),
+(UUID(), 'ゆい', 'yui@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, '美味しいスイーツを探してます。'),
+(UUID(), 'さくら', 'sakura@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, '春が一番好き。'),
+(UUID(), 'みさき', 'misaki@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, '水族館巡りが趣味です。'),
+(UUID(), 'めぐみ', 'megumi@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, 'ヨガに通っています。'),
+(UUID(), 'えり', 'eri@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, '海外ドラマにハマってます。'),
+(UUID(), 'かな', 'kana@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, '犬と散歩するのが幸せ。'),
+(UUID(), 'まい', 'mai@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, '文房具を集めるのが好き。'),
+(UUID(), 'あおい', 'aoi@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, '空の写真を撮るのが好き。'),
+(UUID(), 'ちひろ', 'chihiro@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, '美術館によく行きます。'),
+(UUID(), 'りか', 'rika@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, '辛い食べ物が好き！'),
+(UUID(), 'ゆり', 'yuri@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, 'お花に囲まれて暮らしたい。'),
+(UUID(), 'ひな', 'hina@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, 'アイドルが好きです。'),
+(UUID(), 'まゆ', 'mayu@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, 'コスメ大好き！'),
+(UUID(), 'くるみ', 'kurumi@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, 'ハンドメイド作品を作ってます。'),
+(UUID(), 'あゆみ', 'ayumi@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, '朝活を頑張っています。'),
+(UUID(), 'みほ', 'miho@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, '占いとか信じるタイプ。'),
+(UUID(), 'かおり', 'kaori@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, '紅茶が好きです。'),
+(UUID(), 'りこ', 'riko@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, 'おしゃべりするのが好き。'),
+(UUID(), 'しおり', 'shiori@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, '図書館にこもるのが幸せ。'),
+(UUID(), 'ひなた', 'hinata@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, '陽気な性格です。'),
+(UUID(), 'まどか', 'madoka@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, 'ジャズをよく聴きます。'),
+(UUID(), 'すみれ', 'sumire@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, '和服に興味があります。'),
+(UUID(), 'れい', 'rei@example.com', '$2y$10$HJ/BcpWW5XRpXLxYZKnvzO1fcttW71YRCIkcvSnJJMpXSqxNOab0e', 2, '夜更かしが得意です。');
+
