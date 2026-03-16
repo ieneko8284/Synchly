@@ -40,41 +40,59 @@ class UserController
         }
     }
 
-    /**
-     * サインアップ（新規ユーザー登録）
-     */
     public function signUp()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $username = $_POST['username'] ?? '';
-            $email = $_POST['email'] ?? '';
-            $password = password_hash($_POST['password'] ?? '', PASSWORD_DEFAULT);
-            $gender = $_POST['gender'] ?? 1;
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $username = trim($_POST['username'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $passwordRaw = $_POST['password'] ?? '';
+        $gender = $_POST['gender'] ?? 1;
 
-            // UUIDの生成 (デファクトスタンダードな形式)
-            $data = random_bytes(16);
-            $data[6] = chr(ord($data[6]) & 0x0f | 0x40); // version 4
-            $data[8] = chr(ord($data[8]) & 0x3f | 0x80); // variant RFC 4122
-            $uuid = vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+        // --- 1. バリデーション（入力チェック） ---
+        if (empty($username) || empty($email) || strlen($passwordRaw) < 6) {
+            header('Location: /signup?error=invalid');
+            exit;
+        }
 
-            $database = new Database();
-            $db = $database->getConnection();
+        // データベースとリポジトリの準備
+        $database = new Database();
+        $db = $database->getConnection();
+        $repository = new UserRepository($db);
 
-            $stmt = $db->prepare("INSERT INTO users (id, username, email, password_hash, gender) VALUES (?, ?, ?, ?, ?)");
-            try {
-                $stmt->execute([$uuid, $username, $email, $password, $gender]);
+        // --- 2. 重複チェック（Repositoryのメソッドを使用） ---
+        if ($repository->existsEmail($email)) {
+            header('Location: /signup?error=dup');
+            exit;
+        }
 
-                // 登録成功したらそのままログイン状態にする
+        // --- 3. ユーザー作成処理 ---
+        $passwordHash = password_hash($passwordRaw, PASSWORD_DEFAULT);
+
+        // UUID生成（ここはロジックとしてコントローラーに残してもOK）
+        $data = random_bytes(16);
+        $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
+        $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
+        $uuid = vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+
+        try {
+            // 保存処理をRepositoryに任せる
+            $success = $repository->createUser($uuid, $username, $email, $passwordHash, $gender);
+
+            if ($success) {
+                // 成功したらセッションに保存
                 $_SESSION['user_id'] = $uuid;
                 $_SESSION['user_name'] = $username;
                 $_SESSION['user_gender'] = $gender;
                 header('Location: /');
-            } catch (\Exception $e) {
-                header('Location: /signup?error=dup');
+            } else {
+                throw new \Exception("Insert failed");
             }
-            exit;
+        } catch (\Exception $e) {
+            header('Location: /signup?error=system');
         }
+        exit;
     }
+}
 
     /**
      * ユーザー一覧API（異性のみ、いいね済み除外）
@@ -349,6 +367,29 @@ class UserController
             header('Content-Type: application/json');
             echo json_encode($messages);
         }
+        exit;
+    }
+
+    public function withdrawApi()
+    {
+        $myId = $_SESSION['user_id'] ?? null;
+        if (!$myId) { /* エラー処理 */
+        }
+
+        $database = new Database();
+        $db = $database->getConnection();
+        $repository = new UserRepository($db);
+
+        // これだけでDBが全部掃除してくれる
+        $success = $repository->deleteUserComplete($myId);
+
+        if ($success) {
+            $_SESSION = [];
+            session_destroy();
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode(['success' => $success]);
         exit;
     }
 }

@@ -262,12 +262,33 @@ window.removeLike = async function (userId) {
     }
 };
 
-window.confirmWithdrawal = function () {
-    if (confirm("退会するとデータが全て削除されます。よろしいですか？")) {
-        location.href = "/logout";
+window.confirmWithdrawal = async function () {
+    if (!confirm("退会すると全てのデータが削除され、復元できません。よろしいですか？")) return;
+
+    // 1. 【重要】もしチャット中だったらタイマーを止める
+    if (typeof chatTimer !== 'undefined' && chatTimer) {
+        clearInterval(chatTimer);
+    }
+
+    try {
+        const response = await fetch('/api/withdraw', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        const result = await response.json();
+
+        if (result.success) {
+            alert('退会手続きが完了しました。ご利用ありがとうございました。');
+            // 2. セッションが切れているはずなので、ログイン画面へ飛ばす
+            location.href = '/login'; 
+        } else {
+            alert('退会処理に失敗しました。');
+        }
+    } catch (e) {
+        console.error('Withdraw error:', e);
+        alert('通信エラーが発生しました。');
     }
 };
-
 // --- 3. 初期化 ---
 document.addEventListener('DOMContentLoaded', () => {
     loadPage('list');

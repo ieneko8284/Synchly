@@ -14,15 +14,15 @@
         <form action="/api/signup" method="POST">
             <div class="form-group">
                 <label>ニックネーム</label>
-                <input type="text" name="username" required placeholder="例：家村佳佑">
+                <input type="text" name="username" required placeholder="">
             </div>
             <div class="form-group">
                 <label>メールアドレス</label>
-                <input type="email" name="email" required placeholder="music@example.com">
+                <input type="email" name="email" required placeholder="">
             </div>
             <div class="form-group">
                 <label>パスワード</label>
-                <input type="password" name="password" required placeholder="8文字以上">
+                <input type="password" name="password" required placeholder="">
             </div>
             <div class="form-group">
                 <label>あなたの性別</label>

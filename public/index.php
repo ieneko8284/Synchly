@@ -112,6 +112,11 @@ switch ($path) {
         $controller->sendMessageApi();
         break;
 
+    case '/api/withdraw':
+        $controller = new UserController();
+        $controller->withdrawApi();
+        break;
+    
     default:
         http_response_code(404);
         echo "404 Not Found";

@@ -183,4 +183,55 @@ class UserRepository
         $stmt = $this->conn->prepare("INSERT INTO matches (user_id_1, user_id_2, created_at) VALUES (?, ?, NOW())");
         return $stmt->execute([$u1, $u2]);
     }
+
+    public function deleteUserComplete($userId)
+    {
+        // CASCADE設定のおかげで、usersを消すだけでlikesもmessagesも全部消えるよ！
+        $stmt = $this->conn->prepare("DELETE FROM users WHERE id = :id");
+        return $stmt->execute(['id' => $userId]);
+    }
+
+// UserRepository.php
+
+    /**
+     * 新規ユーザーを登録する
+     */
+    public function createUser($uuid, $username, $email, $passwordHash, $gender)
+    {
+        $stmt = $this->conn->prepare("
+        INSERT INTO users (id, username, email, password_hash, gender) 
+        VALUES (?, ?, ?, ?, ?)
+    ");
+        return $stmt->execute([$uuid, $username, $email, $passwordHash, $gender]);
+    }
+
+    /**
+     * メールアドレスが既に登録されているかチェック
+     */
+    public function existsEmail($email)
+    {
+        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM users WHERE email = ?");
+        $stmt->execute([$email]);
+        return $stmt->fetchColumn() > 0;
+    }
+
+    /**
+     * ユーザーを削除する（退会）
+     * ※CASCADE設定があるため、これを実行するだけで関連データは一掃される
+     */
+    public function deleteUser($userId)
+    {
+        $stmt = $this->conn->prepare("DELETE FROM users WHERE id = ?");
+        return $stmt->execute([$userId]);
+    }
+
+    /**
+     * ログイン用にメールアドレスからユーザーを取得
+     */
+    public function findByEmail($email)
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM users WHERE email = ?");
+        $stmt->execute([$email]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
 }
