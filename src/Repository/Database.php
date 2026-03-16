@@ -5,11 +5,18 @@ use PDO;
 use PDOException;
 
 class Database {
-    private $host = 'localhost';
-    private $db_name = 'synchly_db';
-    private $username = 'root'; // XAMPPのデフォルト
-    private $password = 'next123';     // XAMPPのデフォルト
+    private $host;
+    private $db_name;
+    private $username;
+    private $password;
     public $conn;
+
+    public function __construct() {
+        $this->host = getenv('DB_HOST') ?: 'localhost';
+        $this->db_name = getenv('DB_DATABASE') ?: 'synchly_db';
+        $this->username = getenv('DB_USERNAME') ?: 'root'; // XAMPPのデフォルト
+        $this->password = getenv('DB_PASSWORD') ?: 'next123'; // XAMPPのデフォルト
+    }
 
     public function getConnection() {
         $this->conn = null;
