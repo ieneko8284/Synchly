@@ -1,4 +1,8 @@
-USE synchly_DB;
+USE synchly_db;
+SET NAMES utf8mb4;
+SET character_set_client = utf8mb4;
+SET character_set_connection = utf8mb4;
+SET character_set_results = utf8mb4;
 
 -- 外部キー制約を一時的に無視してテーブルを削除
 SET FOREIGN_KEY_CHECKS = 0;

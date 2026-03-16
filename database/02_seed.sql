@@ -1,4 +1,8 @@
 USE synchly_db;
+SET NAMES utf8mb4;
+SET character_set_client = utf8mb4;
+SET character_set_connection = utf8mb4;
+SET character_set_results = utf8mb4;
 
 -- 男性ユーザー (gender=1) 25人
 INSERT INTO users (id, username, email, password_hash, gender, bio) VALUES 
