@@ -48,3 +48,43 @@ PHPUnitを用いた単体テストの導入。
 UI/UXのブラッシュアップ:
 
 インラインCSSを外部スタイルシートへ完全に移行し、共通コンポーネントのデザインガイドラインを作成する。
+
+## Dockerでの起動方法
+
+### 前提
+- Docker Desktop が起動していること
+- `docker compose` が使えること
+
+### 起動
+プロジェクトルート（このREADMEがあるディレクトリ）で実行:
+
+```powershell
+composer docker:build
+composer docker:up
+```
+
+ブラウザで以下にアクセス:
+
+```text
+http://localhost:8080
+```
+
+### 停止
+
+```powershell
+composer docker:down
+```
+
+### ログ確認
+
+```powershell
+composer docker:logs
+```
+
+### DBを初期化し直す場合
+文字化け対策や初期データ再投入のために、ボリュームごと削除して再作成:
+
+```powershell
+docker compose -f docker/docker-compose.yml down -v
+composer docker:up
+```
