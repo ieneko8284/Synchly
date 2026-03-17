@@ -23,14 +23,14 @@ switch ($path) {
         } else {
             header('Location: /login');
         }
-        break;
+        exit;
 
-    // ★ここを追加：ログイン画面の表示
+        // ★ここを追加：ログイン画面の表示
     case '/login':
         require __DIR__ . '/../views/login.php';
-        break;
+        exit;
 
-    // ★ここを追加：ログアウト処理
+        // ★ここを追加：ログアウト処理
     case '/logout':
         $_SESSION = array(); // セッション変数を空にする
         session_destroy();    // セッションを破棄
@@ -39,65 +39,65 @@ switch ($path) {
 
     case '/signup':
         require __DIR__ . '/../views/signup.php';
-        break;
+        exit;
 
     case '/api/signin':
         $controller = new UserController();
         $controller->signIn();
-        break;
+        exit;
 
     case '/api/signup':
         $controller = new UserController();
         $controller->signUp();
-        break;
+        exit;
 
     case '/api/users':
         $controller = new UserController();
         $controller->getUsersApi();
-        break;
+        exit;
 
     case '/api/like':
         $controller = new UserController();
         $controller->handleLikeApi();
-        break;
+        exit;
 
-    // --- api/likes/mine (自分がいいねした人一覧) ---
-    // --- index.php の該当箇所をこれに差し替え ---
+        // --- api/likes/mine (自分がいいねした人一覧) ---
+        // --- index.php の該当箇所をこれに差し替え ---
     case '/api/likes/mine':
         $controller = new UserController();
         $controller->getMyLikesApi(); // ここでコントローラーを呼ぶ
-        break;
+        exit;
 
     case '/api/like/remove':
         $controller = new UserController();
         $controller->removeLikeApi(); // ここも同じ
-        break;
+        exit;
 
     case '/api/likes/received':
         $controller = new UserController();
         $controller->getReceivedLikesApi();
-        break;
+        exit;
 
     case '/api/matches':
         $controller = new UserController();
         $controller->getMatchesApi();
-        break;
+        exit;
 
-    // public/index.php
+        // public/index.php
 
     case '/api/check-new-matches':
         $controller = new UserController();
         $controller->checkNewMatchesApi(); // ここでコントローラーを呼ぶ
-        break;
+        exit;
 
     case '/api/mark-match-notified':
         $controller = new UserController();
         $controller->markMatchNotifiedApi(); // 通知済みフラグを立てる用
-        break;
+        exit;
 
-    // index.php のルーター部分のイメージ
+        // index.php のルーター部分のイメージ
     case '/api/my-profile': // または action パラメータ判定
-        $controller = new \Synchly\Controller\UserController();
+        $controller = new UserController();
         $controller->getMyProfileApi();
         exit; // JSONを返した後は必ず止める！
 
@@ -105,20 +105,25 @@ switch ($path) {
     case '/api/chat/history':
         $controller = new UserController();
         $controller->getChatHistoryApi();
-        break;
+        exit;
 
     case '/api/chat/send':
         $controller = new UserController();
         $controller->sendMessageApi();
-        break;
+        exit;
 
     case '/api/withdraw':
         $controller = new UserController();
         $controller->withdrawApi();
-        break;
-    
+        exit;
+
+    // case '/api/profile/update': // ここを追加しておこう
+    //     $controller = new UserController();
+    //     $controller->updateProfileApi();
+    //     break;
+
     default:
         http_response_code(404);
         echo "404 Not Found";
-        break;
+        exit;
 }

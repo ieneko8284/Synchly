@@ -183,40 +183,31 @@ class UserController
         exit;
     }
 
-    public function removeLikeApi()
-    {
-        // 1. 送られてきたJSONデータを取得
-        $json = file_get_contents('php://input');
-        $data = json_decode($json, true);
+   public function removeLikeApi()
+{
+    $json = file_get_contents('php://input');
+    $data = json_decode($json, true);
 
-        // 2. 相手のIDがちゃんと入っているかチェック
-        $toUserId = $data['to_user_id'] ?? null;
-        $myId = $_SESSION['user_id'] ?? null;
+    $toUserId = $data['to_user_id'] ?? null;
+    $myId = $_SESSION['user_id'] ?? null;
 
-        // --- ここからデバッグ用ログ ---
-        // C:\Users\student\Desktop\Synchly\debug.log に書き込まれるよ
-        $log = sprintf("[%s] From: %s, To: %s\n", date('Y-m-d H:i:s'), $myId, $toUserId);
-        file_put_contents(__DIR__ . '/../../debug.log', $log, FILE_APPEND);
-        // --- デバッグ用ログここまで ---
-
-        if (!$toUserId || !$myId) {
-            header('Content-Type: application/json');
-            echo json_encode(['success' => false, 'message' => 'IDが足りません']);
-            exit;
-        }
-
-        // 3. データベース接続
-        $database = new Database();
-        $db = $database->getConnection();
-
-        // 4. 削除実行
-        $stmt = $db->prepare("DELETE FROM likes WHERE from_user_id = ? AND to_user_id = ?");
-        $success = $stmt->execute([$myId, $toUserId]);
-
+    if (!$toUserId || !$myId) {
         header('Content-Type: application/json');
-        echo json_encode(['success' => $success]);
+        echo json_encode(['success' => false, 'message' => 'ID不足']);
         exit;
     }
+
+    $database = new Database();
+    $db = $database->getConnection();
+    $repository = new UserRepository($db);
+
+    // ★リポジトリの新しいメソッドを呼び出す
+    $success = $repository->removeLikeAndPotentialMatch($myId, $toUserId);
+
+    header('Content-Type: application/json');
+    echo json_encode(['success' => $success]);
+    exit;
+}
 
     public function getReceivedLikesApi()
     {

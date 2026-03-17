@@ -234,4 +234,35 @@ class UserRepository
         $stmt->execute([$email]);
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
+
+    // UserRepository.php 内に追加
+
+    /**
+     * 特定のユーザー間のいいねとマッチングを削除する
+     */
+    public function removeLikeAndPotentialMatch($myId, $toUserId)
+    {
+        try {
+            $this->conn->beginTransaction();
+
+            // 1. いいねを削除（自分が相手にしたいいね）
+            $stmt1 = $this->conn->prepare("DELETE FROM likes WHERE from_user_id = ? AND to_user_id = ?");
+            $stmt1->execute([$myId, $toUserId]);
+
+            // 2. マッチングを削除（双方向を考慮）
+            // matchesテーブルの user_id_1, user_id_2 はどちらに入っているか不明なため両パターンチェック
+            $stmt2 = $this->conn->prepare("
+            DELETE FROM matches 
+            WHERE (user_id_1 = ? AND user_id_2 = ?) 
+               OR (user_id_1 = ? AND user_id_2 = ?)
+        ");
+            $stmt2->execute([$myId, $toUserId, $toUserId, $myId]);
+
+            $this->conn->commit();
+            return true;
+        } catch (\Exception $e) {
+            $this->conn->rollBack();
+            return false;
+        }
+    }
 }
